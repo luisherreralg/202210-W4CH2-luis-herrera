@@ -1,8 +1,14 @@
 import "./App.css";
-import { Form } from "./components/formulario";
+import { Footer } from "./components/footer";
+import { Form } from "./components/form";
 
 function App() {
-  return <Form></Form>;
+  return (
+    <>
+      <Form></Form>
+      <Footer></Footer>
+    </>
+  );
 }
 
 export default App;

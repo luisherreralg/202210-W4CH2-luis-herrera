@@ -72,20 +72,24 @@ export function Form() {
     return age;
   };
 
+  // La idea era componentizar los formularios para mejorar la legibilidad, pero no me ha dado tiempo
   const form1 = () => {
     ageCalculator();
     const template = (
       <>
         <h2>Personal Data</h2>
-        <form onSubmit={handleSubmit}>
+        {/* No me funciona el autoComplete="off" */}
+        {/* No me funciona el required tampoco */}
+        <form autoComplete="off" onSubmit={handleSubmit}>
           <div>
             <legend>Name</legend>
             <input
               type="text"
               name="name"
-              placeholder="Introduzca su nombre"
+              placeholder="Insert first name"
               value={form.name}
               onInput={handleForm}
+              required
             />
           </div>
           <div>
@@ -93,7 +97,7 @@ export function Form() {
             <input
               type="text"
               name="lastName"
-              placeholder="Introduzca su apellido"
+              placeholder="Insert last name"
               value={form.lastName}
               onInput={handleForm}
             />
@@ -107,8 +111,9 @@ export function Form() {
               onInput={handleForm}
             />
             <p>
-              Your current age:{" "}
-              {!isNaN(ageCalculator()) && ageCalculator() + " years old"}
+              {" "}
+              {!isNaN(ageCalculator()) &&
+                "Your current age:" + ageCalculator() + " years old"}
             </p>
           </div>
           <div>
@@ -161,6 +166,7 @@ export function Form() {
               name="email"
               value={form.email}
               onInput={handleForm}
+              placeholder="Email"
             />
           </div>
           <div>
@@ -171,6 +177,7 @@ export function Form() {
               checked={form.newsletter}
               onChange={handleForm}
             />
+            <p>Accept terms of use</p>
           </div>
           <div>
             <button
@@ -199,7 +206,7 @@ export function Form() {
             <input
               type="text"
               name="username"
-              placeholder="Introduzca su nombre de usuario"
+              placeholder="Inset username"
               value={form.username}
               onInput={handleForm}
               required
@@ -210,7 +217,7 @@ export function Form() {
             <input
               type="password"
               name="password"
-              placeholder="Introduzca su contraseña"
+              placeholder="Insert password"
               value={form.password}
               onInput={handleForm}
               required
@@ -221,7 +228,7 @@ export function Form() {
             <input
               type="password"
               name="repeatPassword"
-              placeholder="Repita su contraseña"
+              placeholder="Repeat password"
               value={form.repeatPassword}
               onInput={handleForm}
               required
@@ -269,8 +276,6 @@ export function Form() {
             >
               Prev
             </button>
-          </div>
-          <div>
             <button
               type="submit"
               onClick={() => {
@@ -312,8 +317,6 @@ export function Form() {
           >
             Prev
           </button>
-        </div>
-        <div>
           <button
             type="submit"
             onClick={() => {
@@ -337,7 +340,7 @@ export function Form() {
             <input
               type="text"
               name="username"
-              placeholder="Introduzca su nombre de usuario"
+              placeholder="Insert username"
               value={loginState.username}
               onInput={handleLogin}
               required
@@ -348,7 +351,7 @@ export function Form() {
             <input
               type="password"
               name="password"
-              placeholder="Introduzca su contraseña"
+              placeholder="Insert password"
               value={loginState.password}
               onInput={handleLogin}
               required
