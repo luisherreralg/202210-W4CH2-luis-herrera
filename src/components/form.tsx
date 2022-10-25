@@ -13,6 +13,11 @@ interface IUser {
   acctype: string;
 }
 
+interface ILoginData {
+  username: string;
+  password: string;
+}
+
 export function Form() {
   const user: IUser = {
     name: "",
@@ -27,10 +32,14 @@ export function Form() {
     acctype: "",
   };
 
+  const loginData: ILoginData = {
+    username: "",
+    password: "",
+  };
+
   const [counter, setCounter] = useState(0);
 
   const handlerCounter = (value: number) => {
-    // counter = counter + value;
     setCounter(counter + value);
   };
 
@@ -38,7 +47,6 @@ export function Form() {
 
   const handleSubmit = (ev: SyntheticEvent) => {
     ev.preventDefault();
-    console.log("Submiteando? xd");
   };
 
   const handleForm = (ev: SyntheticEvent) => {
@@ -50,19 +58,38 @@ export function Form() {
     });
   };
 
+  const [loginState, setloginState] = useState(loginData);
+
+  const handleLogin = (ev: SyntheticEvent) => {
+    const element = ev.target as HTMLFormElement;
+    setloginState({ ...loginState, [element.name]: element.value });
+  };
+
+  const ageCalculator = () => {
+    const today = new Date(); // Guardamos la fecha de hoy dentro de una variable
+    const birthDate = new Date(form.birthdate); // Guardamos la fecha de nacimiento dentro de una variable
+    let age = today.getFullYear() - birthDate.getFullYear(); // Restamos las fechas y las guardamos dentro de otra variable
+    return age;
+  };
+
+  // La idea era componentizar los formularios para mejorar la legibilidad, pero no me ha dado tiempo
   const form1 = () => {
+    ageCalculator();
     const template = (
       <>
         <h2>Personal Data</h2>
-        <form onSubmit={handleSubmit}>
+        {/* No me funciona el autoComplete="off" */}
+        {/* No me funciona el required tampoco */}
+        <form autoComplete="off" onSubmit={handleSubmit}>
           <div>
             <legend>Name</legend>
             <input
               type="text"
               name="name"
-              placeholder="Introduzca su nombre"
+              placeholder="Insert first name"
               value={form.name}
               onInput={handleForm}
+              required
             />
           </div>
           <div>
@@ -70,7 +97,7 @@ export function Form() {
             <input
               type="text"
               name="lastName"
-              placeholder="Introduzca su apellido"
+              placeholder="Insert last name"
               value={form.lastName}
               onInput={handleForm}
             />
@@ -83,6 +110,11 @@ export function Form() {
               value={form.birthdate}
               onInput={handleForm}
             />
+            <p>
+              {" "}
+              {!isNaN(ageCalculator()) &&
+                "Your current age:" + ageCalculator() + " years old"}
+            </p>
           </div>
           <div>
             <legend>Gender</legend>
@@ -134,6 +166,7 @@ export function Form() {
               name="email"
               value={form.email}
               onInput={handleForm}
+              placeholder="Email"
             />
           </div>
           <div>
@@ -144,6 +177,7 @@ export function Form() {
               checked={form.newsletter}
               onChange={handleForm}
             />
+            <p>Accept terms of use</p>
           </div>
           <div>
             <button
@@ -172,9 +206,10 @@ export function Form() {
             <input
               type="text"
               name="username"
-              placeholder="Introduzca su nombre de usuario"
+              placeholder="Inset username"
               value={form.username}
               onInput={handleForm}
+              required
             />
           </div>
           <div>
@@ -182,9 +217,10 @@ export function Form() {
             <input
               type="password"
               name="password"
-              placeholder="Introduzca su apellido"
+              placeholder="Insert password"
               value={form.password}
               onInput={handleForm}
+              required
             />
           </div>
           <div>
@@ -192,8 +228,10 @@ export function Form() {
             <input
               type="password"
               name="repeatPassword"
+              placeholder="Repeat password"
               value={form.repeatPassword}
               onInput={handleForm}
+              required
             />
           </div>
           <div>
@@ -238,8 +276,6 @@ export function Form() {
             >
               Prev
             </button>
-          </div>
-          <div>
             <button
               type="submit"
               onClick={() => {
@@ -281,14 +317,88 @@ export function Form() {
           >
             Prev
           </button>
+          <button
+            type="submit"
+            onClick={() => {
+              handlerCounter(+1);
+            }}
+          >
+            Next
+          </button>
         </div>
       </>
     );
   };
 
+  const loginForm = () => {
+    const template = (
+      <>
+        <h2>Login</h2>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <legend>Username</legend>
+            <input
+              type="text"
+              name="username"
+              placeholder="Insert username"
+              value={loginState.username}
+              onInput={handleLogin}
+              required
+            />
+          </div>
+          <div>
+            <legend>Password</legend>
+            <input
+              type="password"
+              name="password"
+              placeholder="Insert password"
+              value={loginState.password}
+              onInput={handleLogin}
+              required
+            />
+          </div>
+          <div>
+            <button
+              type="submit"
+              onClick={() => {
+                loginChecker();
+              }}
+            >
+              Confirm
+            </button>
+          </div>
+        </form>
+      </>
+    );
+
+    return template;
+  };
+
+  const loginChecker = () => {
+    // let templateError = (
+    //   <>
+    //     <h2>ERROR INVALID DATA</h2>
+    //   </>
+    // );
+
+    // let templateCorrect = () => {
+    //   <h2>CORRECT DATA!</h2>;
+    // };
+
+    if (
+      loginState.username !== form.username ||
+      loginState.password !== form.password
+    ) {
+      return console.log("INVALID DATA");
+    }
+
+    return console.log("VALID DATA");
+  };
+
   const render = () => {
     if (counter === 1) return form2();
     if (counter === 2) return form3();
+    if (counter === 3) return loginForm();
     return form1();
   };
 
