@@ -1,4 +1,4 @@
-import { SyntheticEvent, useEffect, useState } from "react";
+
 
 interface IUser {
   name: string;
