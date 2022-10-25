@@ -1,4 +1,4 @@
-
+import { SyntheticEvent, useState } from "react";
 
 interface IUser {
   name: string;
@@ -28,10 +28,6 @@ export function Form() {
   };
 
   const [counter, setCounter] = useState(0);
-
-  // useEffect(() => {
-  //   render();
-  // }, [counter]);
 
   const handlerCounter = (value: number) => {
     // counter = counter + value;
